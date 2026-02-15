@@ -1,8 +1,8 @@
 <div align="center">
   <h2>HFP-SAM: Hierarchical Frequency Prompted SAM for Efficient Marine Animal Segmentation</h2>
   <p>
-    <a href="tipcode/train_y.py">Training</a> ·
-    <a href="tipcode/download_sam_ckpt.sh">Download SAM checkpoint</a>
+    <a href="tipcode/train_y.py">Training script</a> ·
+    <a href="tipcode/download_sam_ckpt.sh">Download SAM weights</a>
   </p>
   <p>
     <img alt="License" src="https://img.shields.io/badge/License-Apache--2.0-blue.svg" />
@@ -11,43 +11,45 @@
   </p>
 </div>
 
-## Overview
-This repository provides the code for **HFP-SAM: Hierarchical Frequency Prompted SAM for Efficient Marine Animal Segmentation**.
-This GitHub release is **code-only** (no paper sources / response letters / review files).
+## Introduction
+This repository provides the experimental code for **HFP-SAM: Hierarchical Frequency Prompted SAM for Efficient Marine Animal Segmentation** (the GitHub release keeps only code and documentation closely related to the paper).
 
 HFP-SAM targets **Marine Animal Segmentation (MAS)** and introduces:
 
-- **FGA (Frequency Guided Adapter)**: injects marine-scene priors into a frozen SAM backbone using frequency-domain prior masks
-- **FPS (Frequency-aware Point Selection)**: selects informative point prompts by combining frequency analysis with coarse SAM masks
-- **FVM (Full-View Mamba)**: aggregates spatial + channel context with linear complexity
+- **FGA (Frequency Guided Adapter)**: uses frequency-domain prior masks to efficiently inject marine-scene information into a frozen SAM backbone
+- **FPS (Frequency-aware Point Selection)**: selects highlighted regions via frequency analysis and fuses them with coarse segmentation to produce point prompts
+- **FVM (Full-View Mamba)**: extracts spatial and channel contextual information with linear computational complexity
 
-> Note: **Datasets and large model weights are not included** in this repo. A download script and dataset format are provided.
+> Note: **datasets and large model weights are not included** in this repository by default (to avoid size/licensing issues). A download script and the expected dataset format are provided.
 
-## Method at a Glance
+## Method Overview
 
 ```mermaid
 flowchart LR
-  A[Input image] --> B[FGA: Frequency Guided Adapter]
-  B --> C[SAM backbone (frozen)]
-  C --> D[Coarse mask]
-  D --> E[FPS: Frequency-aware Point Selection]
-  E --> F[Point prompts + mask prompts]
-  F --> G[SAM prompt encoder + mask decoder]
-  G --> H[FVM: Full-View Mamba]
-  H --> I[Final mask]
+  A[Input image] --> B[FGA: Frequency Guided Adapter];
+  B --> C[SAM backbone (frozen)];
+  C --> D[Coarse mask];
+  D --> E[FPS: Frequency-aware Point Selection];
+  E --> F[Point prompts + mask prompts];
+  F --> G[SAM prompt encoder + mask decoder];
+  G --> H[FVM: Full-View Mamba];
+  H --> I[Final mask];
 ```
 
-## Repository Layout
+## Paper & Materials
+This repository **does not include** paper source files / response letters / review materials (code only). For the paper or supplementary materials, please use official publication channels or contact the authors.
+
+## Repository Structure
 
 ```text
 TIP-HFP-SAM/
-  tipcode/               # training / inference code
-  requirements.txt       # python deps (torch/torchvision: install via PyTorch official guide)
+  tipcode/               # training / inference code (main implementation)
+  requirements.txt       # Python deps (install torch/torchvision via PyTorch official guide)
   LICENSE                # Apache-2.0
-  CITATION.cff           # citation metadata for GitHub
+  CITATION.cff           # citation metadata
 ```
 
-## Installation
+## Environment Setup
 
 ```bash
 python3 -m venv .venv
@@ -56,14 +58,14 @@ pip install -U pip
 pip install -r requirements.txt
 ```
 
-> We recommend installing `torch/torchvision` following the official PyTorch guide to match your CUDA / platform.
+> We recommend installing `torch/torchvision` following the official PyTorch instructions to match your CUDA / platform.
 
-## Optional: FVM/Mamba CUDA extension
-`tipcode/segment_anything/modeling/vmamba.py` relies on the CUDA extension `selective_scan_cuda_core` for the FVM/Mamba path.
-If it is not available, the code will **automatically fall back** to a lightweight `DWConv+PWConv` approximation for debuggability (**results will differ from the paper**).
+## Optional: FVM/Mamba Acceleration Dependency
+The FVM/Mamba path in `tipcode/segment_anything/modeling/vmamba.py` depends on the CUDA extension `selective_scan_cuda_core`.
+If the extension is not available, the code will **automatically fall back** to a `DWConv+PWConv` approximation to remain runnable (**results will differ from the paper**).
 
-## Download SAM checkpoint (required)
-The SAM `vit_b` checkpoint is ~375MB and is ignored by `.gitignore`. Download it into `tipcode/`:
+## Prepare SAM pretrained checkpoint (required)
+The SAM `vit_b` checkpoint (~375MB) is ignored by `.gitignore`. Please download it into `tipcode/`:
 
 ```bash
 bash tipcode/download_sam_ckpt.sh
@@ -71,7 +73,7 @@ bash tipcode/download_sam_ckpt.sh
 
 This will create: `tipcode/sam_vit_b_01ec64.pth`
 
-## Data Format
+## Data Preparation
 `tipcode/dataset_fre.py` expects the following structure (file stems must match):
 
 ```text
@@ -92,9 +94,10 @@ python3 tipcode/train_y.py \
   --batch_size 6
 ```
 
-Training checkpoints (`.pth`) will be written to `--save_dir` and ignored by `.gitignore`.
+Training checkpoints (`.pth`) will be saved to `--save_dir` and ignored by `.gitignore`.
 
 ## Inference / Testing (example)
+An example testing script is provided (adjust paths for your dataset):
 
 ```bash
 python3 tipcode/test.py \
@@ -106,8 +109,8 @@ python3 tipcode/test.py \
 ```
 
 ## Citation
-This repository includes `CITATION.cff` (auto-detected by GitHub).
+`CITATION.cff` is included (auto-detected by GitHub).
 
 ## Acknowledgements
-- This project includes and modifies Meta's **Segment Anything** code (Apache-2.0). Please obtain SAM weights from the official source.
+- This project includes and modifies Meta's **Segment Anything** code (Apache-2.0). Please obtain SAM weights from official sources.
 
