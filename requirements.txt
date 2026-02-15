@@ -1,0 +1,18 @@
+# 建议优先按 PyTorch 官方方式安装 torch/torchvision（匹配你的 CUDA/平台）。
+# 这里列出项目其余 Python 依赖。
+
+numpy
+tqdm
+Pillow
+opencv-python
+imageio
+icecream
+safetensors
+
+einops
+timm
+fvcore
+
+torch
+torchvision
+

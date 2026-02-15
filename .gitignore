@@ -1,0 +1,135 @@
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# virtual env / local deps
+.venv/
+venv/
+env/
+.deps/
+tipcode/.venv/
+
+# =========================
+# LaTeX build artifacts
+# =========================
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.bak
+
+# =========================
+# ML checkpoints / weights
+# =========================
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.onnx
+*.engine
+*.tflite
+
+# training outputs / logs
+saved_model/
+checkpoint/
+checkpoints/
+runs/
+wandb/
+logs/
+outputs/
+results/
+
+# =========================
+# Datasets (local only)
+# =========================
+RUWI_DATASET/
+rmas_data/
+data-ufo/
+tipcode/train/
+SAM-512-ckpt/
+
+# =========================
+# Large experiment/visualization folders at repo root
+# (paper/ will keep its own copies if needed)
+# =========================
+/FPS_visual1/
+/FPS_visual2/
+/FVM_ERF/
+/FVM_visual/
+/abla_visual/
+/dataset_bias_plots/
+/edge_fre/
+/edge_frequency/
+/fail/
+/fga/
+/fga_visual/
+/figs/
+/frequency_grid_visual/
+/frequency_grid_visual_overlay/
+/frequency_grid_visual_overlay_sweep/
+/freqwin_gt_analysis/
+/freqwin_gt_analysis_dhwt/
+/test_samb_fre_512_final/
+/test_samb_fre_512_final_1/
+/visual_res_compare/
+
+# =========================
+# Paper duplicates kept under paper/
+# =========================
+/IEEEtran.cls
+/efficiency_table.tex
+/framework.pdf
+/fga.png
+/fvm.png
+/motivation.png
+/res_grid.pdf
+
+# =========================
+# Archives (usually duplicates of tracked content)
+# =========================
+*.zip
+
+# =========================
+# Code-only GitHub release (keep locally, don't track)
+# =========================
+paper/
+SFMFusion_Response/
+samori/
+Reviews*.docx
+Reviews*.txt
+Reviews*.md
+multi.pptx
+revise.pdf
+response_letter*
+dataset_bias*
+efficiency_results.csv
+noise_robustness_*
+framework.png
+assets/
+
+# tipcode: remove bundled sample data / images (code-only release)
+tipcode/test/
+tipcode/feature_channel_*.png
+tipcode/*.png
+tipcode/*.jpg
+
