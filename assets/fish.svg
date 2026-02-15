@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Fish logo">
+  <defs>
+    <linearGradient id="fishGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#22c55e"/>
+      <stop offset="55%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+
+  <!-- bubbles -->
+  <g fill="none" stroke="#94a3b8" stroke-width="6" opacity="0.45">
+    <circle cx="210" cy="58" r="10" />
+    <circle cx="232" cy="92" r="6" />
+    <circle cx="212" cy="112" r="5" />
+  </g>
+
+  <!-- tail -->
+  <path d="M190 128 L242 86 Q232 128 242 170 Z" fill="url(#fishGrad)" opacity="0.95"/>
+
+  <!-- body -->
+  <ellipse cx="112" cy="128" rx="86" ry="56" fill="url(#fishGrad)" opacity="0.95"/>
+
+  <!-- fin -->
+  <path d="M104 128 C118 110, 146 106, 166 118 C150 136, 132 146, 112 148 Z"
+        fill="#e2e8f0" opacity="0.35"/>
+
+  <!-- eye -->
+  <circle cx="74" cy="118" r="10" fill="#0b1220" opacity="0.9"/>
+  <circle cx="70" cy="114" r="3" fill="#e2e8f0" opacity="0.9"/>
+
+  <!-- mouth -->
+  <path d="M34 132 C44 140, 56 140, 66 132" fill="none" stroke="#0b1220" stroke-width="6" stroke-linecap="round" opacity="0.55"/>
+</svg>
+

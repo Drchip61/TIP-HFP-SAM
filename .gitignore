@@ -124,8 +124,6 @@ response_letter*
 dataset_bias*
 efficiency_results.csv
 noise_robustness_*
-framework.png
-assets/
 
 # tipcode: remove bundled sample data / images (code-only release)
 tipcode/test/

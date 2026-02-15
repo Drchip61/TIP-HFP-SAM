@@ -1,4 +1,7 @@
 <div align="center">
+  <p>
+    <img src="assets/fish.svg" width="96" alt="HFP-SAM logo" />
+  </p>
   <h2>HFP-SAM: Hierarchical Frequency Prompted SAM for Efficient Marine Animal Segmentation</h2>
   <p>
     <a href="tipcode/train_y.py">Training script</a> ·
@@ -24,17 +27,10 @@ HFP-SAM targets **Marine Animal Segmentation (MAS)** and introduces:
 
 ## Method Overview
 
-```mermaid
-flowchart LR
-  A["Input image"] --> B["FGA: Frequency Guided Adapter"]
-  B --> C["SAM backbone (frozen)"]
-  C --> D["Coarse mask"]
-  D --> E["FPS: Frequency-aware Point Selection"]
-  E --> F["Point prompts + mask prompts"]
-  F --> G["SAM prompt encoder + mask decoder"]
-  G --> H["FVM: Full-View Mamba"]
-  H --> I["Final mask"]
-```
+<p align="center">
+  <img src="framework.png" width="900" alt="HFP-SAM framework (FGA + FPS + FVM)" />
+</p>
+<p align="center"><i>Framework figure from the paper (FGA + FPS + FVM).</i></p>
 
 ## Paper & Materials
 This repository **does not include** paper source files / response letters / review materials (code only). For the paper or supplementary materials, please use official publication channels or contact the authors.
