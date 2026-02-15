@@ -26,14 +26,14 @@ HFP-SAM targets **Marine Animal Segmentation (MAS)** and introduces:
 
 ```mermaid
 flowchart LR
-  A[Input image] --> B[FGA: Frequency Guided Adapter];
-  B --> C[SAM backbone (frozen)];
-  C --> D[Coarse mask];
-  D --> E[FPS: Frequency-aware Point Selection];
-  E --> F[Point prompts + mask prompts];
-  F --> G[SAM prompt encoder + mask decoder];
-  G --> H[FVM: Full-View Mamba];
-  H --> I[Final mask];
+  A["Input image"] --> B["FGA: Frequency Guided Adapter"]
+  B --> C["SAM backbone (frozen)"]
+  C --> D["Coarse mask"]
+  D --> E["FPS: Frequency-aware Point Selection"]
+  E --> F["Point prompts + mask prompts"]
+  F --> G["SAM prompt encoder + mask decoder"]
+  G --> H["FVM: Full-View Mamba"]
+  H --> I["Final mask"]
 ```
 
 ## Paper & Materials
