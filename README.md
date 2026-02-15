@@ -1,6 +1,6 @@
 <div align="center">
   <p>
-    <img src="assets/fish.svg" width="96" alt="HFP-SAM logo" />
+    <img src="assets/ocean-banner.svg" width="900" alt="Ocean banner" />
   </p>
   <h2>HFP-SAM: Hierarchical Frequency Prompted SAM for Efficient Marine Animal Segmentation</h2>
   <p>
