@@ -1,8 +1,8 @@
 <div align="center">
-  <h2>HFP-SAM：用于高效海洋动物分割的分层频域提示 SAM</h2>
+  <h2>HFP-SAM: Hierarchical Frequency Prompted SAM for Efficient Marine Animal Segmentation</h2>
   <p>
-    <a href="tipcode/train_y.py">训练脚本</a> ·
-    <a href="tipcode/download_sam_ckpt.sh">下载 SAM 权重</a>
+    <a href="tipcode/train_y.py">Training</a> ·
+    <a href="tipcode/download_sam_ckpt.sh">Download SAM checkpoint</a>
   </p>
   <p>
     <img alt="License" src="https://img.shields.io/badge/License-Apache--2.0-blue.svg" />
@@ -11,17 +11,19 @@
   </p>
 </div>
 
-## 项目简介
-本仓库提供论文 **HFP-SAM: Hierarchical Frequency Prompted SAM for Efficient Marine Animal Segmentation** 的实验代码（GitHub 版本仅保留与论文强相关的代码与说明）。
-方法面向 **Marine Animal Segmentation (MAS)**，围绕 SAM 在细粒度细节与频域信息感知不足的问题，引入：
+## Overview
+This repository provides the code for **HFP-SAM: Hierarchical Frequency Prompted SAM for Efficient Marine Animal Segmentation**.
+This GitHub release is **code-only** (no paper sources / response letters / review files).
 
-- **FGA（Frequency Guided Adapter）**：利用频域先验 mask，高效注入海洋场景信息到冻结的 SAM 主干
-- **FPS（Frequency-aware Point Selection）**：基于频域分析生成高亮区域，并与粗分割结果融合产生点提示
-- **FVM（Full-View Mamba）**：以线性复杂度提取空间与通道上下文
+HFP-SAM targets **Marine Animal Segmentation (MAS)** and introduces:
 
-> 说明：**数据集与大模型权重默认不随仓库发布**（避免 GitHub 体积/协议问题）。仓库提供下载脚本与数据格式说明。
+- **FGA (Frequency Guided Adapter)**: injects marine-scene priors into a frozen SAM backbone using frequency-domain prior masks
+- **FPS (Frequency-aware Point Selection)**: selects informative point prompts by combining frequency analysis with coarse SAM masks
+- **FVM (Full-View Mamba)**: aggregates spatial + channel context with linear complexity
 
-## 方法概览
+> Note: **Datasets and large model weights are not included** in this repo. A download script and dataset format are provided.
+
+## Method at a Glance
 
 ```mermaid
 flowchart LR
@@ -35,20 +37,17 @@ flowchart LR
   H --> I[Final mask]
 ```
 
-## 论文与材料
-本仓库**不包含**论文源文件/response/review 等材料（仅发布代码）。如需论文/补充材料，请使用论文官方渠道或联系作者。
-
-## 目录结构
+## Repository Layout
 
 ```text
 TIP-HFP-SAM/
-  tipcode/               # 训练/测试代码（主实现）
-  requirements.txt       # Python 依赖（torch/torchvision 建议按官方方式安装）
+  tipcode/               # training / inference code
+  requirements.txt       # python deps (torch/torchvision: install via PyTorch official guide)
   LICENSE                # Apache-2.0
-  CITATION.cff           # GitHub 引用信息
+  CITATION.cff           # citation metadata for GitHub
 ```
 
-## 环境配置
+## Installation
 
 ```bash
 python3 -m venv .venv
@@ -57,32 +56,32 @@ pip install -U pip
 pip install -r requirements.txt
 ```
 
-> 建议优先参考 PyTorch 官方安装说明，安装与你的 CUDA/平台匹配的 `torch/torchvision`。
+> We recommend installing `torch/torchvision` following the official PyTorch guide to match your CUDA / platform.
 
-## 可选：FVM/Mamba 加速依赖
-`tipcode/segment_anything/modeling/vmamba.py` 的 FVM/Mamba 分支依赖 CUDA 扩展 `selective_scan_cuda_core`。
-若你的环境未安装该扩展，代码会**自动降级**为 `DWConv+PWConv` 近似实现以保证可运行（**结果会与论文不同**）。
+## Optional: FVM/Mamba CUDA extension
+`tipcode/segment_anything/modeling/vmamba.py` relies on the CUDA extension `selective_scan_cuda_core` for the FVM/Mamba path.
+If it is not available, the code will **automatically fall back** to a lightweight `DWConv+PWConv` approximation for debuggability (**results will differ from the paper**).
 
-## 准备 SAM 预训练权重（必需）
-SAM 的 `vit_b` checkpoint **体积约 375MB**，已在 `.gitignore` 中排除。请下载到 `tipcode/` 下：
+## Download SAM checkpoint (required)
+The SAM `vit_b` checkpoint is ~375MB and is ignored by `.gitignore`. Download it into `tipcode/`:
 
 ```bash
 bash tipcode/download_sam_ckpt.sh
 ```
 
-默认会生成：`tipcode/sam_vit_b_01ec64.pth`
+This will create: `tipcode/sam_vit_b_01ec64.pth`
 
-## 数据准备
-`tipcode/dataset_fre.py` 默认的数据组织如下（文件名去掉后缀需一一对应）：
+## Data Format
+`tipcode/dataset_fre.py` expects the following structure (file stems must match):
 
 ```text
 <data_root>/
   Image/          xxx.jpg
-  Masks/          xxx.png        # 0/255 的单通道 mask
-  Frequency_2/    xxx.jpg        # 单通道频域先验图（0~255）
+  Masks/          xxx.png        # single-channel mask (0/255)
+  Frequency_2/    xxx.jpg        # single-channel frequency prior (0~255)
 ```
 
-## 训练
+## Training
 
 ```bash
 python3 tipcode/train_y.py \
@@ -93,10 +92,9 @@ python3 tipcode/train_y.py \
   --batch_size 6
 ```
 
-训练权重（`.pth`）默认会输出到 `--save_dir`，并被 `.gitignore` 自动排除。
+Training checkpoints (`.pth`) will be written to `--save_dir` and ignored by `.gitignore`.
 
-## 测试 / 推理（示例）
-仓库内提供了一个示例测试脚本（路径参数可按你的数据集调整）：
+## Inference / Testing (example)
 
 ```bash
 python3 tipcode/test.py \
@@ -107,9 +105,9 @@ python3 tipcode/test.py \
   --save_path outputs/pred_masks
 ```
 
-## 引用
-仓库已提供 `CITATION.cff`（GitHub 会自动识别）。
+## Citation
+This repository includes `CITATION.cff` (auto-detected by GitHub).
 
-## 致谢
-- 本项目包含并修改了 Meta 的 **Segment Anything** 代码（Apache-2.0）。SAM 权重请从官方渠道下载。
+## Acknowledgements
+- This project includes and modifies Meta's **Segment Anything** code (Apache-2.0). Please obtain SAM weights from the official source.
 
